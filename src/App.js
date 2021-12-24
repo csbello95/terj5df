@@ -1,24 +1,74 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class App extends Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleLastName = this.handleLastName.bind(this);
+    this.handleName = this.handleName.bind(this);
+    this.state = {
+      guests: [],
+      name: "",
+      lastName: "",
+    };
+  }
+
+  handleName(event) {
+    this.setState({
+      name: event.target.value,
+    });
+  }
+
+  handleLastName(event) {
+    this.setState({
+      lastName: event.target.value,
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const newGuest = {
+      name: this.state.name,
+      lastName: this.state.lastName,
+    };
+    this.setState({
+      guests: this.state.guests.concat(newGuest),
+      name: "",
+      lastName: "",
+    });
+  }
   render() {
     return (
       <div className="container">
         <div className="row">
           <div className="col-sm-6 col-sm-offset-3">
-            <form>
+            <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="first-name">Nombre</label>
-                <input type="text" className="form-control" name="first-name" />
+                <input
+                  type="text"
+                  className="form-control"
+                  name="first-name"
+                  onChange={this.handleName}
+                  value={this.state.name}
+                />
               </div>
 
               <div className="form-group">
                 <label htmlFor="last-name">Apellido</label>
-                <input type="text" className="form-control" name="last-name" />
+                <input
+                  type="text"
+                  className="form-control"
+                  name="last-name"
+                  onChange={this.handleLastName}
+                  value={this.state.lastName}
+                />
               </div>
 
               <div className="action">
-                <button type="submit" className="btn btn-primary">Agregar Invitado</button>
+                <button type="submit" className="btn btn-primary">
+                  Agregar Invitado
+                </button>
               </div>
             </form>
 
@@ -30,16 +80,19 @@ class App extends Component {
                 </tr>
               </thead>
               <tbody>
-
+                {this.state.guests.map((guest, index) => (
+                  <tr key={index}>
+                    <td>{guest.name}</td>
+                    <td>{guest.lastName}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default App
-
-
+export default App;
